@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#142a4f">
+  <meta name="description" content="Laman latihan CPNS untuk TWK, TIU, dan TKP.">
+  <title>Ruang Latihan CPNS</title>
+  <link rel="stylesheet" href="styles.css">
+  <!-- MathJax merender rumus LaTeX pada bank soal. Perlu koneksi internet saat laman dibuka. -->
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+      chtml: { scale: 1.02 },
+      startup: { typeset: false }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <!-- data.js dimuat sebelum app.js agar objek QUESTION_BANKS tersedia. -->
+  <script defer src="data.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body data-theme="tiu">
+  <header class="site-header">
+    <div class="brand-wrap">
+      <div class="brand-mark" aria-hidden="true">CP</div>
+      <div>
+        <p class="eyebrow">PUSAT LATIHAN MANDIRI</p>
+        <h1>Ruang Latihan CPNS</h1>
+      </div>
+    </div>
+    <div class="header-note">Belajar terarah. Berlatih konsisten.</div>
+  </header>
+
+  <main class="page-shell">
+    <!-- TAB UTAMA: warna setiap tab diatur melalui data-theme dan CSS. -->
+    <nav class="main-tabs" aria-label="Kategori utama">
+      <button class="main-tab" data-main="TWK" type="button">TWK</button>
+      <button class="main-tab active" data-main="TIU" type="button">TIU</button>
+      <button class="main-tab" data-main="TKP" type="button">TKP</button>
+    </nav>
+
+    <!-- TAB TURUNAN diisi otomatis berdasarkan QUESTION_BANKS dalam data.js. -->
+    <nav id="topicTabs" class="topic-tabs" aria-label="Subkategori latihan"></nav>
+
+    <section class="intro-row">
+      <div>
+        <p class="eyebrow" id="sectionEyebrow">TES INTELEGENSIA UMUM</p>
+        <h2 id="topicHeading">Kecukupan Data</h2>
+        <p id="topicDescription" class="muted">Tentukan apakah informasi pada pernyataan (1), (2), atau keduanya cukup untuk menjawab pertanyaan.</p>
+      </div>
+      <div class="timer-card" aria-live="polite">
+        <span class="timer-label">SISA WAKTU</span>
+        <strong id="timer">30:00</strong>
+        <span id="timerStatus" class="timer-status">Belum dimulai</span>
+      </div>
+    </section>
+
+    <!-- Panduan pilihan jawaban ditampilkan khusus untuk tipe Kecukupan Data. -->
+    <section id="guidePanel" class="guide-panel">
+      <div class="guide-heading">
+        <span class="guide-icon" aria-hidden="true">i</span>
+        <div>
+          <h3>Petunjuk pilihan jawaban</h3>
+          <p class="muted">Gunakan panduan yang sama untuk semua soal Kecukupan Data.</p>
+        </div>
+      </div>
+      <div class="guide-grid">
+        <div><b>A</b><span>Pernyataan (1) saja cukup, tetapi pernyataan (2) saja tidak cukup.</span></div>
+        <div><b>B</b><span>Pernyataan (2) saja cukup, tetapi pernyataan (1) saja tidak cukup.</span></div>
+        <div><b>C</b><span>Kedua pernyataan bersama-sama cukup, tetapi satu pernyataan saja tidak cukup.</span></div>
+        <div><b>D</b><span>Salah satu pernyataan saja cukup: pernyataan (1) saja atau (2) saja.</span></div>
+        <div><b>E</b><span>Kedua pernyataan tidak cukup untuk menjawab pertanyaan.</span></div>
+      </div>
+    </section>
+
+    <section id="emptyState" class="empty-state" hidden>
+      <div class="empty-icon" aria-hidden="true">✎</div>
+      <h3>Bank soal kategori ini belum ditambahkan</h3>
+      <p>Kerangka kategori sudah tersedia. Tambahkan soal pada array kategori yang sesuai di <code>data.js</code>, lalu unggah ulang ke GitHub.</p>
+    </section>
+
+    <!-- AREA UJIAN: satu soal di kiri dan navigasi nomor di kanan. -->
+    <section id="examLayout" class="exam-layout">
+      <article class="question-card">
+        <div class="question-card-top">
+          <div>
+            <span class="question-kicker">LEMBAR SOAL</span>
+            <h3 id="questionCounter">Soal 1 dari 10</h3>
+          </div>
+          <span id="answeredCount" class="answered-pill">0 / 10 dijawab</span>
+        </div>
+
+        <div id="questionArea" class="question-area">
+          <div class="statement-label">PERTANYAAN</div>
+          <div id="questionText" class="question-text"></div>
+          <div class="statement-block">
+            <div class="statement-title">(1)</div>
+            <div id="statement1" class="statement-text"></div>
+          </div>
+          <div class="statement-block">
+            <div class="statement-title">(2)</div>
+            <div id="statement2" class="statement-text"></div>
+          </div>
+
+          <div id="answerArea" class="answer-area">
+            <div class="answer-heading">Pilih jawaban Anda</div>
+            <div id="answerOptions" class="answer-options"></div>
+          </div>
+        </div>
+
+        <div class="question-navigation">
+          <button id="previousBtn" class="button button-quiet" type="button">← Sebelumnya</button>
+          <div class="nav-middle"><span id="progressText">Paket latihan belum dimulai</span></div>
+          <button id="nextBtn" class="button button-primary" type="button">Selanjutnya →</button>
+        </div>
+      </article>
+
+      <aside class="navigator-card">
+        <div class="navigator-heading">
+          <div>
+            <span class="question-kicker">NAVIGASI</span>
+            <h3>Nomor soal</h3>
+          </div>
+          <span class="navigator-count" id="navigatorCount">10</span>
+        </div>
+        <div id="questionGrid" class="question-grid"></div>
+        <div class="legend">
+          <span><i class="legend-dot current"></i>Aktif</span>
+          <span><i class="legend-dot done"></i>Dijawab</span>
+          <span><i class="legend-dot blank"></i>Kosong</span>
+        </div>
+        <div class="navigator-tip">Pilih nomor untuk berpindah langsung ke soal tersebut.</div>
+      </aside>
+    </section>
+
+    <!-- HASIL muncul setelah waktu habis atau peserta menekan Akhiri Ujian. -->
+    <section id="resultPanel" class="result-panel" hidden>
+      <div id="resultCelebration" class="result-celebration" aria-hidden="true"></div>
+      <p class="eyebrow">HASIL PAKET LATIHAN</p>
+      <h2 id="resultTitle">Hasil latihan</h2>
+      <p id="resultMessage" class="result-message"></p>
+      <div class="score-layout">
+        <div class="score-circle" id="scoreCircle"><strong id="scoreValue">0</strong><span>/ 100</span></div>
+        <div class="score-details">
+          <div><span>Benar</span><strong id="correctValue">0</strong></div>
+          <div><span>Salah</span><strong id="wrongValue">0</strong></div>
+          <div><span>Tidak dijawab</span><strong id="blankValue">0</strong></div>
+        </div>
+      </div>
+      <div class="result-actions">
+        <button id="newPackageFromResult" class="button button-primary" type="button">Paket Soal Baru</button>
+        <button id="backToReview" class="button button-quiet" type="button">Tinjau Pembahasan</button>
+      </div>
+      <div id="reviewList" class="review-list"></div>
+    </section>
+
+    <!-- AKSI UTAMA tersedia pada semua subkategori. -->
+    <section class="action-bar">
+      <div class="action-copy">
+        <strong id="actionTitle">Siap memulai latihan?</strong>
+        <span id="actionDescription">Tekan Mulai Mengerjakan untuk menjalankan timer.</span>
+      </div>
+      <div class="action-buttons">
+        <button id="newPackageBtn" class="button button-outline" type="button">↻ Paket Soal Baru</button>
+        <button id="startBtn" class="button button-primary" type="button">Mulai Mengerjakan</button>
+        <button id="finishBtn" class="button button-danger" type="button" hidden>Akhiri Ujian</button>
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      <span>Ruang Latihan CPNS</span>
+      <span>Proyek statis · dapat di-host gratis melalui GitHub Pages</span>
+    </footer>
+  </main>
+
+  <!-- Lapisan visual untuk animasi kembang api. -->
+  <canvas id="fireworksCanvas" class="fireworks-canvas" aria-hidden="true"></canvas>
+</body>
+</html>
